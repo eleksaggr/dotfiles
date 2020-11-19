@@ -12,3 +12,12 @@ bspc config borderless_monocle   true
 bspc config gapless_monocle      true
 
 bspc rule --add "Emacs" state=tiled
+
+SCRIPTS="$HOME/.config/bspwm/bspwm.d"
+
+for f in "$SCRIPTS"/*.sh; do
+    [ -e "$f" ] || continue
+
+    # shellcheck source=/dev/null
+    . "$f"
+done
