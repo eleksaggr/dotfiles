@@ -13,8 +13,6 @@ bspc config gapless_monocle      true
 SCRIPTS="$HOME/.config/bspwm/bspwm.d"
 
 for f in "$SCRIPTS"/*.sh; do
-    [ -e "$f" ] || continue
-
     # shellcheck source=/dev/null
     . "$f"
 done
