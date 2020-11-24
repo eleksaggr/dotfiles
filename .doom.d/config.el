@@ -6,8 +6,10 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-(setq user-full-name "Alex Egger"
-      user-mail-address "alex.egger96@gmail.com")
+(setq user-full-name "Alex Egger")
+(if (string= (system-name) "Titanic")
+    (setq user-mail-address "alex.egger@mixed-mode.de")
+  (setq user-mail-address "alex.egger@mixed-mode.de"))
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -19,13 +21,18 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "Fira Code" :size 14 :weight 'semi-light))
+(if (string= (system-name) "Titanic")
+    (setq
+     doom-font (font-spec :family "Fira Code" :size 28 :weight 'semi-light)
+     doom-variable-pitch-font (font-spec :family "OpenSans" :size 22))
+  (setq doom-font (font-spec :family "Fira Code" :size 14)))
+;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-old-hope)
+(setq doom-theme 'doom-ephemeral)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -33,8 +40,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
-
+(setq display-line-numbers-type nil)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -52,3 +58,43 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+(map!
+ :nv "C-c /" 'counsel-projectile-rg
+ :nv "C-x g" 'magit-status-here
+ )
+
+;; Org Mode
+(after! org
+  ;; General
+  (setq org-tags-column -77
+        org-agenda-window-setup 'reorganize-frame)
+
+  ;; Todo keywords
+  (setq org-todo-keywords
+        '("TODO(t)" "NEXT(n)" "WAIT(w)" "|" "DONE(d)"))
+
+  (custom-declare-face '+org-todo-todo-face '((t (:inherit org-todo))) "Face for Org Mode TODO items.")
+  (custom-declare-face '+org-todo-next-face '((t (:inherit org-todo :box 1))) "Face for Org Mode NEXT items.")
+  (custom-declare-face '+org-todo-wait-face '((t (:inherit warning org-todo))) "Face for Org Mode WAIT items.")
+  (custom-declare-face '+org-todo-done-face '((t (:inherit org-done :bold nil :foreground "dim gray" :strike-through nil))) "Face for Org Mode DONE items.")
+  (custom-set-faces!
+    '(org-headline-done :foreground "dim gray" :strike-through "dim gray"))
+
+  (setq org-todo-keyword-faces
+        '(("TODO" . +org-todo-todo-face)
+          ("NEXT" . +org-todo-next-face)
+          ("WAIT" . +org-todo-wait-face)
+          ("DONE" . +org-todo-done-face)))
+
+  ;; Capture templates
+  (setq org-inbox-file (expand-file-name "inbox.org" org-directory)
+        org-notes-file (expand-file-name "notes.org" org-directory))
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file org-inbox-file) "* TODO %?")
+          ("n" "Note" plain (file+olp+datetree org-notes-file) "%U %?\n")
+          ("c" "Comment" plain (file+olp+datetree org-notes-file) "%U %?\n%a")))
+
+  ;; Keybindings
+  (map! :mode 'org-mode :nvi "C-c a" 'org-agenda)
+  (map! :nv "C-c c" 'org-capture)
+)
