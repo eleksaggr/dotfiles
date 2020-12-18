@@ -9,7 +9,7 @@
 (setq user-full-name "Alex Egger")
 (if (string= (system-name) "Titanic")
     (setq user-mail-address "alex.egger@mixed-mode.de")
-  (setq user-mail-address "alex.egger@mixed-mode.de"))
+  (setq user-mail-address "alex.egger96@gmail.com"))
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -23,7 +23,7 @@
 ;; font string. You generally only need these two:
 (if (string= (system-name) "Titanic")
     (setq
-     doom-font (font-spec :family "Fira Code" :size 28 :weight 'semi-light)
+     doom-font (font-spec :family "Iosevka" :size 28 :weight 'semi-light)
      doom-variable-pitch-font (font-spec :family "OpenSans" :size 22))
   (setq doom-font (font-spec :family "Fira Code" :size 14)))
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
@@ -32,7 +32,9 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-ephemeral)
+(setq doom-theme 'doom-dracula
+      doom-themes-enable-italic nil
+      doom-themes-enable-bold nil)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -61,13 +63,17 @@
 (map!
  :nv "C-c /" 'counsel-projectile-rg
  :nv "C-x g" 'magit-status-here
+ :nvi "C-c z" 'magit-dispatch
  )
 
 ;; Org Mode
 (after! org
   ;; General
-  (setq org-tags-column -77
-        org-agenda-window-setup 'reorganize-frame)
+  (setq
+   org-agenda-window-setup 'reorganize-frame
+   org-archive-location (concat (expand-file-name "%s_archive" (expand-file-name "archive" org-directory)) "::")
+   org-tags-column -77
+   )
 
   ;; Todo keywords
   (setq org-todo-keywords
