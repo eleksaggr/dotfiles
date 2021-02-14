@@ -23,3 +23,4 @@ for f in "$SCRIPTS"/*.sh; do
 done
 
 pgrep -x dunst >/dev/null || dunst &
+pgrep nextcloud >/dev/null || nextcloud --background &
