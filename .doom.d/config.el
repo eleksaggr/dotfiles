@@ -101,6 +101,24 @@
           ("c" "Comment" plain (file+olp+datetree org-notes-file) "%U %?\n%a")))
 
   ;; Keybindings
-  (map! :mode 'org-mode :nvi "C-c a" 'org-agenda)
+  (map! :map (org-mode-map
+               org-agenda-mode-map)
+        :nvi "C-c a" 'org-agenda)
   (map! :nv "C-c c" 'org-capture)
+
+  ;; FIXME: Add custom timestamp format for exporting
+  ;; Adapted from: https://endlessparentheses.com/better-time-stamps-in-org-export.html
+  (require 'ox)
+  (add-to-list 'org-export-filter-timestamp-functions
+               #'eleks/org-filter-timestamp-remove-brackets)
+
+  (setq-default org-display-custom-times 't)
+  (setq org-time-stamp-custom-formats
+        '("<%y-%m-%d>" . "%F"))
 )
+
+(defun eleks/org-filter-timestamp-remove-brackets (trans backend _comm)
+  "Remove <> around a timestamp."
+  (cond
+   ((org-export-derived-backend-p backend 'md)
+    (replace-regexp-in-string "&[lg]t;\\|[][]" "" trans))))
