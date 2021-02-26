@@ -26,6 +26,9 @@ function setupMonitors {
 		if isDPConnected; then
 			xrandr --output "DP-1" --mode 3840x2160 --right-of "eDP-1"
 		fi
+	elif [[ $(hostnamectl --static) == "Bomboclaat" ]]; then
+		xrandr --output "DP-4" --mode 1920x1080 --rate 144.00 --primary
+		xrandr --output "HDMI-0" --mode 1920x1080 --right-of "DP-4"
 	fi
 }
 
