@@ -24,3 +24,5 @@ done
 
 pgrep -x dunst >/dev/null || dunst &
 pgrep nextcloud >/dev/null || nextcloud --background &
+
+kitty &
