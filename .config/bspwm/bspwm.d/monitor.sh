@@ -21,7 +21,7 @@ function setupWorkspaces {
 }
 
 function setupMonitors {
-	if [[ $(hostnamectl --transient) == "Titanic" ]]; then
+	if [[ $(hostnamectl --static) == "Titanic" ]]; then
 		xrandr --output "eDP-1" --mode 3840x2160 --primary
 		if isDPConnected; then
 			xrandr --output "DP-1" --mode 3840x2160 --right-of "eDP-1"
