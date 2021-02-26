@@ -2,7 +2,12 @@
 
 xrdb ~/.Xresources
 
-pgrep -x sxhkd > /dev/null || sxhkd -m -1 &
+if [[ $(hostnamectl --static) == "Bomboclaat" ]]; then
+    pgrep -x sxhkd > /dev/null || sxhkd -c ~/.config/sxhkd/sxhkdrc.bomboclaat -m -1 &
+else
+    pgrep -x sxhkd > /dev/null || sxhkd -m -1 &
+fi
+
 
 bspc config border_width         1
 bspc config window_gap           0
