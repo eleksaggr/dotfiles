@@ -122,3 +122,5 @@
   (cond
    ((org-export-derived-backend-p backend 'md)
     (replace-regexp-in-string "&[lg]t;\\|[][]" "" trans))))
+
+(setq comp-deferred-compilation t)
