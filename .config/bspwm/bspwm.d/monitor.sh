@@ -17,19 +17,18 @@ function setupWorkspaces {
 	else
 		bspc monitor "DP-4" -d I II III IV V VI VII
 		bspc monitor "HDMI-0" -d VIII IX X
-
-		if [ "$(bspc query --monitors | wc -l)" -gt 2 ]; then
-			bspc monitor "DP-3" -d External
-		fi
 	fi
 }
 
 function setupMonitors {
-	if [[ $(hostnamectl --transient) == "Titanic" ]]; then
+	if [[ $(hostnamectl --static) == "Titanic" ]]; then
 		xrandr --output "eDP-1" --mode 3840x2160 --primary
 		if isDPConnected; then
 			xrandr --output "DP-1" --mode 3840x2160 --right-of "eDP-1"
 		fi
+	elif [[ $(hostnamectl --static) == "Bomboclaat" ]]; then
+		xrandr --output "DP-4" --mode 1920x1080 --rate 144.00 --primary
+		xrandr --output "HDMI-0" --mode 1920x1080 --right-of "DP-4"
 	fi
 }
 

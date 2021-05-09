@@ -2,5 +2,5 @@
 
 if status --is-interactive
     # Aliases
-    alias dotfiles='/usr/bin/git --git-dir=$HOME/.git --work-tree=$HOME'
+    alias dots='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 end
